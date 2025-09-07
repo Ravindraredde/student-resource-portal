@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Login</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f0f4f9;
+      font-family: Arial, sans-serif;
+    }
+    .login-box {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 300px;
+    }
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 2px solid #004080;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    button {
+      background: #004080;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #002d5a;
+    }
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Student Login</h2>
+    <input type="email" id="email" placeholder="Enter Registered Email">
+    <input type="password" id="password" placeholder="Enter Password">
+    <button onclick="login()">Login</button>
+    <p class="error" id="errorMsg"></p>
+  </div>
+
+  <script>
+    // Whitelist of student emails (replace with actual college records)
+    const allowedEmails = [
+      "student1@gmail.com",
+      "student2@yahoo.com",
+      "rajesh123@outlook.com",
+      "meena.2002@gmail.com"
+    ];
+
+    function login() {
+      const email = document.getElementById("email").value.trim().toLowerCase();
+      const password = document.getElementById("password").value;
+      const errorMsg = document.getElementById("errorMsg");
+
+      if (!allowedEmails.includes(email)) {
+        errorMsg.textContent = "❌ This email is not registered with the college";
+        return;
+      }
+
+      // Temporary universal password (can make unique later)
+      if (password === "MKDGUAlddgg34bxsne9993nd8dj3eos998erhdf8x!@$") {
+        localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("userEmail", email);
+        window.location.href = "index.html"; // Redirect to main site
+      } else {
+        errorMsg.textContent = "❌ Incorrect password";
+      }
+    }
+  </script>
+</body>
+</html>

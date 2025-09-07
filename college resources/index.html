@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College Student Resource Portal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f6f9;
+      color: #333;
+    }
+    header {
+      background: #004080;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    header img {
+      height: 70px;  /* Adjust logo size */
+      width: auto;
+      margin-right: 15px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .btn-container, .year-container {
+      text-align: center;
+      margin: 15px 0;
+    }
+    button {
+      background: #0066cc;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      margin: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #003366;
+    }
+    main {
+      padding: 2rem;
+    }
+    section {
+      display: none;
+    }
+    section.active {
+      display: block;
+    }
+    h2 {
+      margin-top: 20px;
+      color: #004080;
+      text-align: center;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    ul li {
+      margin: 8px 0;
+      text-align: center;
+    }
+    ul li a {
+      color: #0066cc;
+      text-decoration: none;
+      font-size: 18px;
+    }
+    ul li a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      background: #222;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 20px;
+    }
+    .search-box {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .search-box input {
+      width: 60%;
+      padding: 10px;
+      border: 2px solid #0066cc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    /* Add this to body */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f6f9;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Ensure main takes available space */
+main {
+  flex: 1;
+  padding: 2rem;
+}
+
+/* Footer sticks to bottom */
+footer {
+  background: #222;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: auto;
+}
+.notice-box {
+  background: #fff5f5;
+  border: 2px solid red;
+  border-radius: 10px;
+  padding: 15px;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.notice-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.notice-box li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
+}
+
+.notice-box li:last-child {
+  border-bottom: none;
+}
+
+
+
+  </style>
+</head>
+<body>
+  <header>
+    <img src="Bharath_University_Logo.png" alt="Bharath University Logo">
+    <h1>Students Resource Portal</h1>
+    <script>
+  // Check if logged in
+  if (localStorage.getItem("loggedIn") !== "true") {
+    window.location.href = "login.html";
+  }
+
+  
+</script>
+
+  </header>
+
+  <!-- Department Buttons -->
+  <div class="btn-container">
+    <button onclick="showDepartment('home')">Home</button>
+    <button onclick="showDepartment('cse')">CSE</button>
+    <button onclick="showDepartment('ece')">ECE</button>
+    <button onclick="showDepartment('mech')">MECH</button>
+    <button onclick="showDepartment('civil')">CIVIL</button>
+   <button onclick="logout()">Logout</button>
+
+  </div>
+  <!-- notice board
+    -->
+  <div style="text-align:center; margin: 30px 0;">
+  <button onclick="showNotices()" 
+          style="background:red; color:white; font-size:18px; padding:12px 24px; border:none; border-radius:8px; cursor:pointer;">
+    📢 Notice Board
+  </button>
+</div>
+<section id="notice-board" style="display:none; margin-top:20px;">
+  <h2 style="text-align:center; color:red;">📢 Notice Board</h2>
+  <div class="notice-box">
+    <ul id="notices">
+      <li>📅 Mid-Sem Exams start from 15th September 2025</li>
+      <li>🎉 Freshers Day Celebration on 20th September 2025</li>
+      <li>📄 Lab Internal Submission due by 25th September 2025</li>
+      <li>🏫 College closed for Gandhi Jayanti on 2nd October 2025</li>
+    </ul>
+  </div>
+  <div style="text-align:center; margin-top:10px;">
+    <button onclick="goBack('home')" style="padding:8px 16px; border:none; background:#444; color:white; border-radius:6px;">⬅ Back</button>
+  </div>
+</section>
+
+
+ 
+
+
+  <main>
+    <!-- Search -->
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search notes or syllabus..." onkeyup="searchContent()">
+    </div>
+
+    <!-- Home -->
+    <section id="home" class="active">
+      <h2>Welcome Students 👋</h2>
+      <p style="text-align:center;">Find syllabus, notes, and study materials for your branch and year.</p>
+    </section>
+
+    <!-- Department Sections -->
+    <section id="cse">
+      <h2>CSE Department</h2>
+      <div class="year-container">
+        <button onclick="showYear('cse1','cse')">1st Year</button>
+        <button onclick="showYear('cse2','cse')">2nd Year</button>
+        <button onclick="showYear('cse3','cse')">3rd Year</button>
+        <button onclick="showYear('cse4','cse')">4th Year</button>
+      </div>
+    </section>
+    <!-- CSE 4th Year -->
+<section id="cse4">
+  <h2>CSE - 4th Year</h2>
+  <div class="year-container">
+    <button onclick="showSubject('ml','cse4')">Machine Learning</button>
+    <button onclick="showSubject('cloud','cse4')">Cloud Computing & Virtualization</button>
+    <button onclick="showSubject('edge','cse4')">Edge Computing</button>
+    <button onclick="showSubject('nlp','cse4')">Natural Language Processing</button>
+    <button onclick="showSubject('blockchain','cse4')">Blockchain Technology</button>
+  </div>
+  <div style="text-align:center;">
+    <button onclick="goBack('cse')">⬅ Back</button>
+  </div>
+</section>
+
+<!-- Example subjects -->
+<section id="ml">
+  <h2>Machine Learning</h2>
+  <ul>
+    <li><a href="syllabus/ml.pdf" target="_blank">Syllabus</a></li>
+    <li><a href="notes/ml_notes.pdf" target="_blank">Notes</a></li>
+  </ul>
+  <div style="text-align:center;">
+    <button onclick="goBack('cse4')">⬅ Back</button>
+  </div>
+</section>
+
+<section id="cloud">
+  <h2>Cloud Computing & Virtualization</h2>
+  <ul>
+    <li><a href="syllabus/cloud.pdf" target="_blank">Syllabus</a></li>
+    <li><a href="notes/cloud_notes.pdf" target="_blank">Notes</a></li>
+  </ul>
+  <div style="text-align:center;">
+    <button onclick="goBack('cse4')">⬅ Back</button>
+  </div>
+</section>
+
+<section id="edge">
+  <h2>Edge Computing</h2>
+  <ul>
+    <li><a href="syllabus/edge.pdf" target="_blank">Syllabus</a></li>
+    <li><a href="notes/edge_notes.pdf" target="_blank">Notes</a></li>
+  </ul>
+  <div style="text-align:center;">
+    <button onclick="goBack('cse4')">⬅ Back</button>
+  </div>
+</section>
+
+<section id="nlp">
+  <h2>Natural Language Processing</h2>
+  <ul>
+    <li><a href="syllabus/nlp.pdf" target="_blank">Syllabus</a></li>
+    <li><a href="notes/nlp_notes.pdf" target="_blank">Notes</a></li>
+  </ul>
+  <div style="text-align:center;">
+    <button onclick="goBack('cse4')">⬅ Back</button>
+  </div>
+</section>
+
+<section id="blockchain">
+  <h2>Blockchain Technology</h2>
+  <ul>
+    <li><a href="syllabus/blockchain.pdf" target="_blank">Syllabus</a></li>
+    <li><a href="notes/blockchain_notes.pdf" target="_blank">Notes</a></li>
+  </ul>
+  <div style="text-align:center;">
+    <button onclick="goBack('cse4')">⬅ Back</button>
+  </div>
+</section>
+
+
+    <section id="ece">
+      <h2>ECE Department</h2>
+      <div class="year-container">
+        <button onclick="showYear('ece1','ece')">1st Year</button>
+        <button onclick="showYear('ece2','ece')">2nd Year</button>
+        <button onclick="showYear('ece3','ece')">3rd Year</button>
+        <button onclick="showYear('ece4','ece')">4th Year</button>
+      </div>
+    </section>
+    <section id="ece4">
+  <h2>ECE - 4th Year</h2>
+  <div class="year-container">
+    <button onclick="showSubject('ece_vlsi','ece4')">VLSI Design</button>
+    <button onclick="showSubject('ece_signal','ece4')">Digital Signal Processing</button>
+    <button onclick="showSubject('ece_embedded','ece4')">Embedded Systems</button>
+    <button onclick="showSubject('ece_iot','ece4')">IoT Applications</button>
+    <button onclick="showSubject('ece_wireless','ece4')">Wireless Communication</button>
+  </div>
+  <div style="text-align:center;">
+    <button onclick="goBack('ece')">⬅ Back</button>
+  </div>
+</section>
+
+<section id="ece_vlsi">
+  <h2>VLSI Design</h2>
+  <ul>
+    <li><a href="syllabus/ece_vlsi.pdf" target="_blank">Syllabus</a></li>
+    <li><a href="notes/ece_vlsi_notes.pdf" target="_blank">Notes</a></li>
+  </ul>
+  <div style="text-align:center;"><button onclick="goBack('ece4')">⬅ Back</button></div>
+</section>
+
+<section id="ece_signal">
+  <h2>Digital Signal Processing</h2>
+  <ul>
+    <li><a href="syllabus/ece_signal.pdf" target="_blank">Syllabus</a></li>
+    <li><a href="notes/ece_signal_notes.pdf" target="_blank">Notes</a></li>
+  </ul>
+  <div style="text-align:center;"><button onclick="goBack('ece4')">⬅ Back</button></div>
+</section>
+
+<section id="ece_embedded">
+  <h2>Embedded Systems</h2>
+  <ul>
+    <li><a href="syllabus/ece_embedded.pdf" target="_blank">Syllabus</a></li>
+    <li><a href="notes/ece_embedded_notes.pdf" target="_blank">Notes</a></li>
+  </ul>
+  <div style="text-align:center;"><button onclick="goBack('ece4')">⬅ Back</button></div>
+</section>
+
+<section id="ece_iot">
+  <h2>IoT Applications</h2>
+  <ul>
+    <li><a href="syllabus/ece_iot.pdf" target="_blank">Syllabus</a></li>
+    <li><a href="notes/ece_iot_notes.pdf" target="_blank">Notes</a></li>
+  </ul>
+  <div style="text-align:center;"><button onclick="goBack('ece4')">⬅ Back</button></div>
+</section>
+
+<section id="ece_wireless">
+  <h2>Wireless Communication</h2>
+  <ul>
+    <li><a href="syllabus/ece_wireless.pdf" target="_blank">Syllabus</a></li>
+    <li><a href="notes/ece_wireless_notes.pdf" target="_blank">Notes</a></li>
+  </ul>
+  <div style="text-align:center;"><button onclick="goBack('ece4')">⬅ Back</button></div>
+</section>
+
+
+    <section id="mech">
+      <h2>MECH Department</h2>
+      <div class="year-container">
+        <button onclick="showYear('mech1','mech')">1st Year</button>
+        <button onclick="showYear('mech2','mech')">2nd Year</button>
+        <button onclick="showYear('mech3','mech')">3rd Year</button>
+        <button onclick="showYear('mech4','mech')">4th Year</button>
+      </div>
+    </section>
+    <section id="mech4">
+  <h2>MECH - 4th Year</h2>
+  <div class="year-container">
+    <button onclick="showSubject('mech_cad','mech4')">CAD / CAM</button>
+    <button onclick="showSubject('mech_thermal','mech4')">Thermal Engineering</button>
+    <button onclick="showSubject('mech_robotics','mech4')">Robotics</button>
+    <button onclick="showSubject('mech_auto','mech4')">Automobile Engineering</button>
+    <button onclick="showSubject('mech_manufacturing','mech4')">Advanced Manufacturing</button>
+  </div>
+  <div style="text-align:center;">
+    <button onclick="goBack('mech')">⬅ Back</button>
+  </div>
+</section>
+
+<section id="mech_cad">
+  <h2>CAD / CAM</h2>
+  <ul>
+    <li><a href="syllabus/mech_cad.pdf" target="_blank">Syllabus</a></li>
+    <li><a href="notes/mech_cad_notes.pdf" target="_blank">Notes</a></li>
+  </ul>
+  <div style="text-align:center;"><button onclick="goBack('mech4')">⬅ Back</button></div>
+</section>
+
+<section id="mech_thermal">
+  <h2>Thermal Engineering</h2>
+  <ul>
+    <li><a href="syllabus/mech_thermal.pdf" target="_blank">Syllabus</a></li>
+    <li><a href="notes/mech_thermal_notes.pdf" target="_blank">Notes</a></li>
+  </ul>
+  <div style="text-align:center;"><button onclick="goBack('mech4')">⬅ Back</button></div>
+</section>
+
+<section id="mech_robotics">
+  <h2>Robotics</h2>
+  <ul>
+    <li><a href="syllabus/mech_robotics.pdf" target="_blank">Syllabus</a></li>
+    <li><a href="notes/mech_robotics_notes.pdf" target="_blank">Notes</a></li>
+  </ul>
+  <div style="text-align:center;"><button onclick="goBack('mech4')">⬅ Back</button></div>
+</section>
+
+<section id="mech_auto">
+  <h2>Automobile Engineering</h2>
+  <ul>
+    <li><a href="syllabus/mech_auto.pdf" target="_blank">Syllabus</a></li>
+    <li><a href="notes/mech_auto_notes.pdf" target="_blank">Notes</a></li>
+  </ul>
+  <div style="text-align:center;"><button onclick="goBack('mech4')">⬅ Back</button></div>
+</section>
+
+<section id="mech_manufacturing">
+  <h2>Advanced Manufacturing</h2>
+  <ul>
+    <li><a href="syllabus/mech_manufacturing.pdf" target="_blank">Syllabus</a></li>
+    <li><a href="notes/mech_manufacturing_notes.pdf" target="_blank">Notes</a></li>
+  </ul>
+  <div style="text-align:center;"><button onclick="goBack('mech4')">⬅ Back</button></div>
+</section>
+
+
+    <section id="civil">
+      <h2>CIVIL Department</h2>
+      <div class="year-container">
+        <button onclick="showYear('civil1','civil')">1st Year</button>
+        <button onclick="showYear('civil2','civil')">2nd Year</button>
+        <button onclick="showYear('civil3','civil')">3rd Year</button>
+        <button onclick="showYear('civil4','civil')">4th Year</button>
+      </div>
+    </section>
+    <section id="civil4">
+  <h2>CIVIL - 4th Year</h2>
+  <div class="year-container">
+    <button onclick="showSubject('civil_structural','civil4')">Structural Engineering</button>
+    <button onclick="showSubject('civil_transport','civil4')">Transportation Engineering</button>
+    <button onclick="showSubject('civil_env','civil4')">Environmental Engineering</button>
+    <button onclick="showSubject('civil_geo','civil4')">Geotechnical Engineering</button>
+    <button onclick="showSubject('civil_project','civil4')">Project Management</button>
+  </div>
+  <div style="text-align:center;">
+    <button onclick="goBack('civil')">⬅ Back</button>
+  </div>
+</section>
+
+<section id="civil_structural">
+  <h2>Structural Engineering</h2>
+  <ul>
+    <li><a href="syllabus/civil_structural.pdf" target="_blank">Syllabus</a></li>
+    <li><a href="notes/civil_structural_notes.pdf" target="_blank">Notes</a></li>
+  </ul>
+  <div style="text-align:center;"><button onclick="goBack('civil4')">⬅ Back</button></div>
+</section>
+
+<section id="civil_transport">
+  <h2>Transportation Engineering</h2>
+  <ul>
+    <li><a href="syllabus/civil_transport.pdf" target="_blank">Syllabus</a></li>
+    <li><a href="notes/civil_transport_notes.pdf" target="_blank">Notes</a></li>
+  </ul>
+  <div style="text-align:center;"><button onclick="goBack('civil4')">⬅ Back</button></div>
+</section>
+
+<section id="civil_env">
+  <h2>Environmental Engineering</h2>
+  <ul>
+    <li><a href="syllabus/civil_env.pdf" target="_blank">Syllabus</a></li>
+    <li><a href="notes/civil_env_notes.pdf" target="_blank">Notes</a></li>
+  </ul>
+  <div style="text-align:center;"><button onclick="goBack('civil4')">⬅ Back</button></div>
+</section>
+
+<section id="civil_geo">
+  <h2>Geotechnical Engineering</h2>
+  <ul>
+    <li><a href="syllabus/civil_geo.pdf" target="_blank">Syllabus</a></li>
+    <li><a href="notes/civil_geo_notes.pdf" target="_blank">Notes</a></li>
+  </ul>
+  <div style="text-align:center;"><button onclick="goBack('civil4')">⬅ Back</button></div>
+</section>
+
+<section id="civil_project">
+  <h2>Project Management</h2>
+  <ul>
+    <li><a href="syllabus/civil_project.pdf" target="_blank">Syllabus</a></li>
+    <li><a href="notes/civil_project_notes.pdf" target="_blank">Notes</a></li>
+  </ul>
+  <div style="text-align:center;"><button onclick="goBack('civil4')">⬅ Back</button></div>
+</section>
+
+
+    <!-- Year-wise Content (CSE) -->
+    <section id="cse1">
+      <h2>CSE - 1st Year</h2>
+      <ul>
+        <li><a href="syllabus/cse_1st.pdf" target="_blank">Syllabus</a></li>
+        <li><a href="notes/cse_1st_notes.pdf" target="_blank">Notes</a></li>
+      </ul>
+      <div style="text-align:center;">
+        <button onclick="goBack('cse')">⬅ Back</button>
+      </div>
+    </section>
+    <section id="cse2"><h2>CSE - 2nd Year</h2><ul><li><a href="#">Syllabus</a></li><li><a href="#">Notes</a></li></ul><div style="text-align:center;"><button onclick="goBack('cse')">⬅ Back</button></div></section>
+    <section id="cse3"><h2>CSE - 3rd Year</h2><ul><li><a href="#">Syllabus</a></li><li><a href="#">Notes</a></li></ul><div style="text-align:center;"><button onclick="goBack('cse')">⬅ Back</button></div></section>
+    <section id="cse4"><h2>CSE - 4th Year</h2><ul><li><a href="#">Syllabus</a></li><li><a href="#">Notes</a></li></ul><div style="text-align:center;"><button onclick="goBack('cse')">⬅ Back</button></div></section>
+
+    <!-- Year-wise Content (ECE) -->
+    <section id="ece1"><h2>ECE - 1st Year</h2><ul><li><a href="#">Syllabus</a></li><li><a href="#">Notes</a></li></ul><div style="text-align:center;"><button onclick="goBack('ece')">⬅ Back</button></div></section>
+    <section id="ece2"><h2>ECE - 2nd Year</h2><ul><li><a href="#">Syllabus</a></li><li><a href="#">Notes</a></li></ul><div style="text-align:center;"><button onclick="goBack('ece')">⬅ Back</button></div></section>
+    <section id="ece3"><h2>ECE - 3rd Year</h2><ul><li><a href="#">Syllabus</a></li><li><a href="#">Notes</a></li></ul><div style="text-align:center;"><button onclick="goBack('ece')">⬅ Back</button></div></section>
+    <section id="ece4"><h2>ECE - 4th Year</h2><ul><li><a href="#">Syllabus</a></li><li><a href="#">Notes</a></li></ul><div style="text-align:center;"><button onclick="goBack('ece')">⬅ Back</button></div></section>
+
+    <!-- Year-wise Content (MECH) -->
+    <section id="mech1"><h2>MECH - 1st Year</h2><ul><li><a href="#">Syllabus</a></li><li><a href="#">Notes</a></li></ul><div style="text-align:center;"><button onclick="goBack('mech')">⬅ Back</button></div></section>
+    <section id="mech2"><h2>MECH - 2nd Year</h2><ul><li><a href="#">Syllabus</a></li><li><a href="#">Notes</a></li></ul><div style="text-align:center;"><button onclick="goBack('mech')">⬅ Back</button></div></section>
+    <section id="mech3"><h2>MECH - 3rd Year</h2><ul><li><a href="#">Syllabus</a></li><li><a href="#">Notes</a></li></ul><div style="text-align:center;"><button onclick="goBack('mech')">⬅ Back</button></div></section>
+    <section id="mech4"><h2>MECH - 4th Year</h2><ul><li><a href="#">Syllabus</a></li><li><a href="#">Notes</a></li></ul><div style="text-align:center;"><button onclick="goBack('mech')">⬅ Back</button></div></section>
+
+    <!-- Year-wise Content (CIVIL) -->
+    <section id="civil1"><h2>CIVIL - 1st Year</h2><ul><li><a href="#">Syllabus</a></li><li><a href="#">Notes</a></li></ul><div style="text-align:center;"><button onclick="goBack('civil')">⬅ Back</button></div></section>
+    <section id="civil2"><h2>CIVIL - 2nd Year</h2><ul><li><a href="#">Syllabus</a></li><li><a href="#">Notes</a></li></ul><div style="text-align:center;"><button onclick="goBack('civil')">⬅ Back</button></div></section>
+    <section id="civil3"><h2>CIVIL - 3rd Year</h2><ul><li><a href="#">Syllabus</a></li><li><a href="#">Notes</a></li></ul><div style="text-align:center;"><button onclick="goBack('civil')">⬅ Back</button></div></section>
+    <section id="civil4"><h2>CIVIL - 4th Year</h2><ul><li><a href="#">Syllabus</a></li><li><a href="#">Notes</a></li></ul><div style="text-align:center;"><button onclick="goBack('civil')">⬅ Back</button></div></section>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Bharath University</p>
+  </footer>
+
+   
+ <script>
+  function showDepartment(id) {
+    document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+  }
+
+  function showYear(yearId, deptId) {
+    document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
+    document.getElementById(yearId).classList.add("active");
+    document.getElementById(yearId).setAttribute("data-dept", deptId);
+  }
+
+  function goBack(deptId) {
+    document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
+    document.getElementById(deptId).classList.add("active");
+  }
+
+  function searchContent() {
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let sections = document.querySelectorAll("section");
+
+    sections.forEach(section => {
+      let links = section.querySelectorAll("ul li a");
+      let found = false;
+
+      links.forEach(link => {
+        let text = link.textContent.toLowerCase();
+        if (text.includes(input) && input !== "") {
+          link.parentElement.style.display = "block";
+          found = true;
+        } else {
+          link.parentElement.style.display = "none";
+        }
+      });
+
+      // Show section if it has a match, otherwise hide it (except home)
+      if (section.id !== "home") {
+        section.style.display = found || input === "" ? "block" : "none";
+      }
+    });
+
+    // Always hide Home during search
+    if (input !== "") {
+      document.getElementById("home").style.display = "none";
+    } else {
+      document.getElementById("home").style.display = "block";
+    }
+  }
+  function logout() {
+    localStorage.removeItem("loggedIn");
+    localStorage.removeItem("userEmail");
+    window.location.href = "login.html";
+  }
+  const noticeList = document.getElementById("notices");
+  setInterval(() => {
+    let firstNotice = noticeList.firstElementChild;
+    noticeList.appendChild(firstNotice); // moves first notice to bottom
+  }, 4000); // change every 4 seconds
+
+  function showNotices() {
+    document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
+    document.getElementById("notice-board").style.display = "block";
+  }
+</script>
+
+
+
+
+
+</body>
+</html>
